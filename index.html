@@ -1,0 +1,248 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link href="http://www.google.com/css/go-x.css" rel="stylesheet" type="text/css" />
+<title>パックマン - Quiz Fest for Google Developer Day 2010 Japan</title>
+<style type="text/css">
+  h1 a img {margin-top: -27px;}
+  #header {height:77px;　vertical-align:bottom;}
+  #nav {margin-top:30px;}
+  #aux {margin-top:30px;}
+</style>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-7050108-2']);
+  _gaq.push(['_trackPageview']);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+</head>
+<body class="compact">
+  <div id="nav-container">
+    <ul id="nav">
+      <li><a href="https://www.google.com/moderator/#15/e=cc74&t=cc74.43">クイズに関する質問</a></li>
+      <li><a href="http://www.google.co.jp/events/developerday/2010/tokyo/">GDD 2010 Japan ホーム</a></li>
+    </ul>
+  </div>
+  <div id="aux">
+    <div id="title"><h2>パックマン</h2></div>
+    <div id="main">
+      <style type="text/css">
+        td { padding:5px 10px; }
+        .center { text-align:center }
+      </style>
+
+<h3>問題</h3>
+
+<p>
+壁で囲まれた 2 次元グリッド状のフィールドに、自機と複数の敵が配置されています。また、フィールドの空きマスには&quot;ドット&quot;が置かれています。自機を動かして、迫り来る敵を回避しながら効率よくドットを集めてください。
+</p>
+
+<h4>問題インスタンス</h4>
+
+<p>
+問題は簡単なものから難しいものまで 3 セット用意されています。各セットを解くたびに、得点が与えられます。
+<p>
+ひとつの問題セット毎に、制限時間 T とフィールドの初期状態が与えられます。フィールドは幅 W マス高さ H マスのセルからなるグリッドで、各セルの位置は左上を (1, 1), 右下を (W, H) とする座標で表されます。その初期状態は以下のような H 行 W 列の ASCII 文字データとして与えられます。
+<table border="1">
+    <tbody>
+        <tr>
+            <td style="font-family:courier new,monospace" class="center">##########<br />#.....V..#<br />#.######.#<br />#...#....#<br />#L#...#.##<br />#.####..J#<br />#..@##.#.#<br />#.#....#.#<br />#.R.#.#H.#<br />##########<br /></font></td>
+        </tr>
+    </tbody>
+</table>
+</p>
+
+<p>
+各マスを表す文字は以下のいずれかとします。
+<table border="1">
+    <tbody>
+        <tr>
+            <td style="font-family:courier new,monospace;" class="center">#</td>
+            <td>壁</td>
+        </tr>
+        <tr>
+            <td style="font-family:courier new,monospace;" class="center">(空白)</td>
+            <td>空きマス</td>
+        </tr>
+        <tr>
+            <td style="font-family:courier new,monospace;" class="center">.</td>
+            <td>ドット</td>
+        </tr>
+        <tr>
+            <td style="font-family:courier new,monospace;" class="center">@</td>
+            <td>自機</td>
+        </tr>
+        <tr>
+            <td style="font-family:courier new,monospace;" class="center">V</td>
+            <td>敵 V</td>
+        </tr>
+        <tr>
+            <td style="font-family:courier new,monospace;" class="center">H</td>
+            <td>敵 H</td>
+        </tr>
+        <tr>
+            <td style="font-family:courier new,monospace;" class="center">L</td>
+            <td>敵 L</td>
+        </tr>
+        <tr>
+            <td style="font-family:courier new,monospace;" class="center">R</td>
+            <td>敵 R</td>
+        </tr>
+        <tr>
+            <td style="font-family:courier new,monospace;" class="center">J</td>
+            <td>敵 J</td>
+        </tr>
+    </tbody>
+</table>
+<ul>
+    <li><b><span style="font-family:courier new,monospace;">@</span></b> は時刻 t = 0 における自機の初期位置を表します。これはフィールド中に必ずちょうど1つだけ存在します。</li>
+    <li>英字は時刻 t = 0 における敵の初期位置を表します。</li>
+    <li><b><span style="font-family:courier new,monospace;">#</span></b> は壁を表します。そのマスには自機も敵も進入することができません。逆に壁以外のマスにはすべて進入可能です。</li>
+    <li>空白文字は空きマスを表します。</li>
+    <li><b><span style="font-family:courier new,monospace;">.</span></b> はそのマスにドットが置かれていることを表します。ドットでない進入可能なマス、すなわち自機と敵の初期位置および空きマスにはドットは置かれません。</li>
+</ul>
+</p>
+
+<p>
+初期状態は次の条件を満たします。
+<ul>
+    <li>フィールドの端のマスはすべて壁です。</li>
+    <li>ドットのあるすべてのマスは自機のあるマスと接続されています。すなわち、自機はフィールド上のドットのある任意のマスに、壁に阻まれずに入ることができます。</li>
+    <li>同種の敵(おなじ英字で表される敵)が複数存在することがあります。</li>
+</ul>
+</p>
+
+<p>
+フィールド中の進入可能マスは、その 4 方向に隣り合うマスのうち進入可能なものの数に応じて、<b>行き止まりマス</b>、<b>通路マス</b>、<b>交差点マス</b>の 3 種類に分類されます。1 方向ある場合が行き止まりマス、2 方向ある場合が通路マス、3,4 方向ある場合が交差点マスとなります。
+</p>
+
+<h4>ゲームの進行</h4>
+
+<p>
+ゲームは次のように進行します。時刻 t = 0, 1, ..., T-1 において、自機と敵は隣り合う 4 方向のマスに移動することができます。敵は必ず移動しますが、自機はその場に留まることを選択することもできます。全機の行動は同時に行われ、時刻が 1 進められます。<br />
+時刻 t = 0, 1, ..., T-1 における自機の動きは自由に決めることができます。一方、敵の動きは後述するようなルールで決まります。<br />
+自機がドットのあるマスに進入すると、ドットを 1 つ回収することができます。一度ドットを回収したマスからは二度とドットを得ることはできません。敵がドットのあるマスに進入しても何も起こりません。<br />
+自機と敵が衝突するとゲームオーバーです。ここで自機とある敵 x が時刻 t = 1, 2, ..., T に衝突するとは次のいずれかの条件を満たす場合をいいます。
+<ol>
+    <li>時刻 t に自機と敵 x が同じマスに存在する。</li>
+    <li>時刻 t-1 における自機と敵 x の位置と、時刻 t における自機と敵 x の位置が交換されている。</li>
+</ol>
+時刻 t に衝突した場合、自機は時刻 t にドットを回収することはできません。
+</p>
+
+<h4>敵の動き方</h4>
+
+<p>
+すべての敵は次の共通ルールに従って移動方向を決定します。
+<ul>
+    <li>時刻 t = 0 においては、初期位置の <b>下、左、上、右</b> の順で最初に進入可能なマスの方向に移動します。</li>
+    <li>時刻 t = 1, 2, ..., T-1 における移動方向は、現在位置の種別によって次のように決定されます。
+        <ul>
+            <li>行き止まりマスの場合、唯一進入可能な隣接マスに移動します。</li>
+            <li>通路マスの場合、時刻 t-1 に居たマス以外の進入可能な隣接するマスに移動します。</li>
+            <li>交差点マスの場合は、敵の種別に応じたアルゴリズムに応じて移動方向を決定します。</li>
+        </ul>
+    </li>
+</ul>
+</p>
+
+<p>
+交差点マスにおける移動方向は次のように決定されます。
+<ul>
+    <li>敵 V
+        <ul>
+            <li>敵から見た自機の相対位置を (dx, dy) と表すものとします。次のルールを上から順に適用し、最初に選ばれた方向に移動します。
+                <ol>
+                    <li>dy &ne; 0 でかつ dy の符号方向にあるマスが進入可能であれば、その方向に移動します。</li>
+                    <li>dx &ne; 0 でかつ dx の符号方向にあるマスが進入可能であれば、その方向に移動します。</li>
+                    <li>現在位置の <b>下、左、上、右</b> の順で最初に進入可能なマスの方向に移動する。</li>
+                </ol>
+            </li>
+        </ul>
+    </li>
+    <li>敵 H
+        <ul>
+            <li>敵 V とほぼ同じです。唯一異なるのは 、進行方向を決めるルールのうち、最初の二つのルールの適用順序が入れ替わるところです。すなわち、先に dx &ne; 0 のチェックを行ない、次に dy &ne; 0 のチェックを行います。</li>
+        </ul>
+    </li>
+    <li>敵 L
+        <ul>
+            <li>現在位置への進入方向から見て相対的に <b>左、前、右</b> の順で最初に進入可能なマスの方向に移動します。</li>
+        </ul>
+    </li>
+    <li>敵 R
+        <ul>
+            <li>現在位置への進入方向から見て相対的に <b>右、前、左 </b>の順で最初に進入可能なマスの方向に移動します。</li>
+        </ul>
+    </li>
+    <li>敵 J
+        <ul>
+            <li>交差点マスに入るたびに、最初は敵Lの行動、次回は敵Rの行動、さらに次回はまた敵Lの行動、と繰り返します。</li>
+        </ul>
+    </li>
+</ul>
+</p>
+
+<h3>入力形式</h3>
+<p>
+制限時間とフィールドの初期配置が以下のような形式で与えられます。
+<table border="1">
+    <tbody>
+        <tr>
+            <td style="text-align:left; font-family:courier new, monospace;">T<br />W H<br />(H 行 W 列のフィールド定義)</font></td>
+        </tr>
+    </tbody>
+</table>
+T は制限時間を表す 1000 以下の正の整数です。フィールド定義の与え方は問題文本文を参照してください。
+</p>
+
+<h3>出力形式</h3>
+<p>
+自機の動き方を表す文字列を出力してください。文字列は t = 0, 1, ..., T-1 における自機の行動を表す文字を連結したものです。
+<table border="1">
+    <tbody>
+        <tr>
+            <td style="font-family:courier new,monospace;">h</td>
+            <td style="">左方向へ移動</td>
+        </tr>
+        <tr>
+            <td style="font-family:courier new,monospace;">j</td>
+            <td style="">下方向へ移動</td>
+        </tr>
+        <tr>
+            <td style="font-family:courier new,monospace;">k</td>
+            <td style="">上方向へ移動</td>
+        </tr>
+        <tr>
+            <td style="font-family:courier new,monospace;">l</td>
+            <td style="">右方向へ移動</td>
+        </tr>
+        <tr>
+            <td style="font-family:courier new,monospace;">.</td>
+            <td style="">その場に留まる</td>
+        </tr>
+    </tbody>
+</table>
+文字列の長さは制限時間以下でなくてはなりません。制限時間より短い文字列を提出した場合、自機はその通りに動いたあと、制限時間までそのまま待機します。
+</p>
+
+<p>
+本問題は<a href="http://www.bandainamcogames.co.jp/">株式会社バンダイナムコゲームス様</a>の『パックマン』をモチーフにしています。<br />
+PAC-MAN: &copy; NBGI
+</p>
+
+    </div>
+    <div id="about" >
+      &copy;2010 <a href="http://www.google.co.jp">Google</a>
+      - <a href="http://www.google.co.jp/accounts/TOS?hl=ja">利用規約</a>
+      - <a href="http://www.google.co.jp/intl/ja/privacy.html">プライバシー ポリシー</a>
+    </div>
+  </div>
+</body>
+</html>
